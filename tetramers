@@ -5,3 +5,24 @@
 ...     return kmers
 ...
 >>> generate_kmers("ATGGCTATTGTTGAAACTGTCATTGATGGCATTAATTATTTTTTGTCCCTTAGTGTTACACAACAGATCAGTATATTATTAGGGGTTCCATTTGTTTACAACTTAGTATGGCAATATTTATATTCATTAAGAAAAGATAGAGCTCCATTAGTGTTTTATTGGATTCCTTGGTTTGGTTCTGCAGCTTCATATGGTCAACAACCTTATGAATTTTTCGAATCATGTCGTCAAAAGTATGGTGATGTATTTTCATTTATGTTATTAGGGAAAATTATGACGG", 4)
+
+# tetramer frequency of particular genomes
+def generate_kmers(sequence, k):
+    kmers = []
+    for i in range(0, len(sequence) - k + 1):
+        kmers.append(sequence[i:i + k])  # 4 spaces indentation
+    return kmers
+
+fasta_file = "C:\\Users\\dhrumil\\Desktop\\GCA_009858895.3_ASM985889v3_genomic.fna"
+k = 4  # Length of k-mers
+
+with open(fasta_file, "r") as Targetfile:
+    readTF = Targetfile.read()
+    Tseq = "".join(readTF.split())
+
+# Generate k-mers
+kmers = generate_kmers(Tseq, k)
+
+# Print the k-mers
+for kmer in kmers:
+    print(kmer)
