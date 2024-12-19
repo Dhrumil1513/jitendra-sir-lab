@@ -1,0 +1,18 @@
+
+
+library(seqinr)
+
+# Reading the FASTA file
+fasta <- read.fasta("sequences.fasta")
+
+# Create directory if it doesn't exist
+dir.create("C:/Users/dhrumil/Desktop/fasta.folder", showWarnings = FALSE)
+
+# Write each sequence to a separate file
+for (i in 1:length(fasta)) {
+  # Get the sequence (as a character string)
+  sequence <- paste(fasta[[i]], collapse = "")
+  
+  # Write the sequence to a file
+  write(sequence, file = paste0("C:/Users/dhrumil/Desktop/fasta.folder/fasta", i, ".txt"))
+}
