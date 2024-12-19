@@ -16,3 +16,25 @@ for (i in 1:length(fasta)) {
   # Write the sequence to a file
   write(sequence, file = paste0("C:/Users/dhrumil/Desktop/fasta.folder/fasta", i, ".txt"))
 }
+
+
+#CORRECT CODE 
+library(seqinr)
+
+# Reading the FASTA file
+fasta <- read.fasta("sequences.fasta")
+
+# Create directory if it doesn't exist
+dir.create("C:/Users/dhrumil/Desktop/fasta.folder", showWarnings = FALSE)
+
+# Write each sequence to a separate file with a title
+for (i in 1:length(fasta)) {
+  # Get the sequence (as a character string)
+  sequence <- paste(fasta[[i]], collapse = "")
+  
+  # Create a title for each sequence, here using a default title like ">seq1", ">seq2", etc.
+  title <- paste0(">seq", i)  # Modify this to use a custom title if needed
+  
+  # Write the title and sequence to a file
+  write(c(title, sequence), file = paste0("C:/Users/dhrumil/Desktop/fasta.folder/FASTA", i, ".txt"))
+}
