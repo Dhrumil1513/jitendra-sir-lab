@@ -14,3 +14,64 @@ sequences <- lapply(fasta_files, function(file) {
 sequences
 count(seq,freq=TRUE,wordsize=4)
 write.csv(seq, file = "C:/Users/dhrumil/Desktop/output1.csv")
+
+
+
+
+
+
+
+
+
+# Set working directory
+setwd("C:/Users/dhrumil/Desktop")
+
+# Install Biostrings package if not already installed
+#if (!requireNamespace("BiocManager", quietly = TRUE))
+#  install.packages("BiocManager")
+#BiocManager::install("Biostrings")
+
+# Load the Biostrings package
+library(Biostrings)
+
+# Function to calculate k-mer frequencies
+calculate_kmer_frequencies <- function(fasta_file, k) {
+  # Read the DNA sequences from the FASTA file
+  dna_sequences <- readDNAStringSet(fasta_file)
+  
+  # Initialize a named vector to store k-mer counts
+  kmer_counts <- integer(4^k)
+  names(kmer_counts) <- names(oligonucleotideFrequency(DNAString(paste(rep("A", k), collapse = "")), width = k, as.prob = FALSE))
+  
+  # Iterate over each sequence
+  for (i in seq_along(dna_sequences)) {
+    seq <- dna_sequences[[i]]
+    # Generate k-mers for the current sequence
+    kmers <- oligonucleotideFrequency(seq, width = k)
+    
+    # Sum the k-mer counts across all sequences
+    kmer_counts <- kmer_counts + kmers
+  }
+  
+  # Calculate total number of k-mers
+  total_kmers <- sum(kmer_counts)
+  
+  # Calculate frequencies
+  kmer_frequencies <- kmer_counts / total_kmers
+  
+  # Create a data frame with the results
+  result <- data.frame(Var1 = names(kmer_frequencies), Freq = kmer_frequencies)
+  
+  return(result)
+}
+
+# Example usage
+fasta_file <- "sequences.fasta"  # Replace with your actual file path
+k <- 4  # Length of k-mers
+kmer_frequencies <- calculate_kmer_frequencies(fasta_file, k)
+
+# Print the result
+print(kmer_frequencies)
+
+# Save the k-mer frequencies to a CSV file
+write.csv(kmer_frequencies, "kmer_frequencies2.csv", row.names = FALSE)
